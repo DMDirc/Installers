@@ -1,0 +1,2 @@
+opt/dmdirc/DMDirc.jar:
+ Main-class: com.dmdirc.Main

@@ -1,0 +1,26 @@
+#!/usr/bin/make -f
+
+JAVA_HOME=/usr/lib/jvm/default-java
+VERSION=$(shell cat dmdirc-version)
+
+%:
+	dh $@ --with javahelper
+
+override_dh_link:
+
+
+# dh_link opt/dmdirc/dmdirc.sh usr/bin/dmdirc
+
+override_dh_auto_test:
+
+# Get the source and the version
+get-source:
+	rm -Rf dmdirc-version dmdirc-orig-source
+	git clone git://dmdirc.com/client dmdirc-orig-source
+	git --git-dir=dmdirc-orig-source/.git describe --tags --always > dmdirc-version
+	rm -Rf dmdirc-orig-source/.git
+
+# Create an orig.tgz from the latest source.
+get-orig-source: get-source
+	tar -zcf dmdirc_$(VERSION).orig.tgz dmdirc-orig-source
+	rm -Rf dmdirc-orig-source dmdirc-version
