@@ -56,13 +56,21 @@ Section "DMDirc" SecDMDirc
 
   call DownloadAndInstallJREIfNecessary
 
-  file "..\..\..\dist\DMDirc.jar"
+  File /nonfatal /r "files\*.*"
 
   ;Store installation folder
   WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "DMDirc"
   WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
   WriteRegStr HKLM "${UNINST_KEY}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\""
   WriteRegStr HKLM "${UNINST_KEY}" "DisplayIcon" "$\"$INSTDIR\DMDirc.exe$\""
+  WriteRegStr HKLM "${UNINST_KEY}" "Publisher" "DMDirc.com"
+  WriteRegStr HKLM "${UNINST_KEY}" "URLInfoAbout" "http://www.DMDirc.com/"
+  WriteRegStr HKLM "${UNINST_KEY}" "URLUpdateInfo" "http://www.DMDirc.com/"
+  WriteRegDWORD HKLM "${UNINST_KEY}" "NoModify" 1
+  WriteRegDWORD HKLM "${UNINST_KEY}" "NoRepair" 1
+  WriteRegStr HKLM "${UNINST_KEY}" "Comments" "DMDirc - The intelligent IRC client"
+  WriteRegStr HKLM "${UNINST_KEY}" "InstallLocation" "$\"$INSTDIR$\""
+  WriteRegStr HKLM "${UNINST_KEY}" "StartMenuPath" "$\"$StartMenuFolder$\""
 
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -84,6 +92,11 @@ Section "Quick Launch" SecQuickLaunch
 SectionEnd
 
 Section "Register URL Protocol" SecProtocol
+  WriteRegStr HKCR "irc" "" "URL:IRC Protocol"
+  WriteRegStr HKCR "irc" "URL Protocol" ""
+  WriteRegBin HKCR "irc" "EditFlags" 02000000
+  WriteRegStr HKCR "irc\DefaultIcon" "" "$\"$INSTDIR\icon.ico$\""
+  WriteRegStr HKCR "irc\Shell\open\command" "" "$\"$INSTDIR\DMDirc.exe$\" -e -c %1"
 SectionEnd
 
 LangString DESC_SecDMDirc ${LANG_ENGLISH} "Core client"
@@ -108,7 +121,7 @@ Section "Uninstall"
   Delete "$QUICKLAUNCH\DMDirc.lnk"
 
   DeleteRegKey HKLM "${UNINST_KEY}"
-
+  DeleteRegKey HKCR "irc"
 SectionEnd
 
 !macro SecUnSelect SecId
