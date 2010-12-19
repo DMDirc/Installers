@@ -12,6 +12,8 @@ SetCompressor /FINAL /SOLID lzma
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "SOFTWARE\DMDirc\DMDirc" 
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "DMDirc"
 !define MUI_FINISHPAGE_RUN "$INSTDIR\DMDirc.exe"
+!define MUI_ICON "files\icon.ico"
+!define MUI_UNICON "files\icon.ico"
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\DMDirc"
 !define JRE_VERSION "1.6"
 !define JRE_URL "www.dmdirc.com/getjava.php?os=windows"
@@ -20,6 +22,8 @@ SetCompressor /FINAL /SOLID lzma
 
 Name "DMDirc"
 BrandingText " "
+Icon "files\icon.ico"
+UninstallIcon "files\icon.ico"
 OutFile "..\output\DMDirc-Setup.exe"
 
 ;Default installation folder

@@ -107,8 +107,6 @@ Function DownloadAndInstallJREIfNecessary
 
 downloadJRE:
   DetailPrint "About to download JRE from ${JRE_URL}"
-  StrCpy $2 "$TEMP\Java Runtime Environment.exe"
-  nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
   nsisdl::download "${JRE_URL}" "$TEMP\jre_Setup.exe"
   Pop $0 # return value = exit code, "OK" if OK
   DetailPrint "Download result = $0"
