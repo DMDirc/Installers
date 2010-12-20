@@ -1,6 +1,12 @@
 !include "WordFunc.nsh"
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"
+!include "MUI2.nsh"
+
+!define JRE_VERSION "1.6"
+!define JRE_URL "www.dmdirc.com/getjava.php?os=windows"
+
+!include "JREDyna.nsh"
 
 Name "Launcher"
 OutFile "files\DMDirc.exe"
@@ -44,7 +50,7 @@ Function checkForUpdates
   done:
 FunctionEnd
 
-Section ""
+Section "launch"
   Call checkForUpdates
   SetAutoClose true
   runclient:
@@ -57,7 +63,7 @@ Section ""
   Call DetectJRE
   Pop $0
   Pop $1
-  StrCmp $0 "OK" continue warn:
+  StrCmp $0 "OK" continue warn
   continue:
   ExecWait '"$1" -jar DMDirc.jar' $0
   strcmp $0 42 runclient exit
