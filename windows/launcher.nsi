@@ -72,7 +72,7 @@ Section "launch"
   Pop $1
   StrCmp $0 "OK" continue warn
   continue:
-  ExecWait '"$1/bin/javaw.exe" -jar DMDirc.jar -l windows-${VERSION} $R0' $0
+  ExecWait '"$1\bin\javaw.exe" -ea -jar DMDirc.jar -l windows-${VERSION} $R0' $0
   strcmp $0 42 runclient exit
   warn:
     MessageBox MB_OK "Unable to find java, exiting."
