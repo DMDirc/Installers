@@ -26,24 +26,31 @@ Function .onInit
   Abort
 
   ${GetParameters} $R0
-  ${GetOptions} $R0 "-d=" $R1
+  ${GetOptions} $R0 "-d " $R1
   StrCmp $R1 "" dir
   strcpy $updateDir $R1
   dir:
   ${GetParameters} $R0
-  ${GetOptions} $R0 "--directory=" $R1
+  ${GetOptions} $R0 "--directory " $R1
   StrCmp $R1 "" continue
   strcpy $updateDir $R1
   continue:
 FunctionEnd
 
 Function checkForUpdates
-  ClearErrors
+  IfFileExists .DMDircUpdater.exe updateJar continue
+    updateJar:
+      delete "$EXEDIR\DMDircUpdater.exe.jar"
+      rename "$updateDir\.DMDircUpdater.exe" "$EXEDIR\DMDircUpdater.exe"
+      delete "$updateDir\.DMDircUpdater.exe"
+  continue:
   IfFileExists .DMDirc.jar update checkUpdater
   checkUpdater:
   IfFileExists .DMDircUpdater.exe update checkLauncher
   checkLauncher:
-  IfFileExists .DMDirc.exe update done
+  IfFileExists .DMDirc.exe update checkUninstaller
+  checkUninstaller:
+  IfFileExists .Uninstaller.exe update done
   update:
     Exec 'DMDircUpdater.exe'
     Quit
@@ -51,9 +58,9 @@ Function checkForUpdates
 FunctionEnd
 
 Section "launch"
+  runclient:
   Call checkForUpdates
   SetAutoClose true
-  runclient:
   push $0
   push $1
   push $2
@@ -65,7 +72,7 @@ Section "launch"
   Pop $1
   StrCmp $0 "OK" continue warn
   continue:
-  ExecWait '"$1" -jar DMDirc.jar' $0
+  ExecWait '"$1/bin/javaw.exe" -jar DMDirc.jar -l windows-${VERSION} $R0' $0
   strcmp $0 42 runclient exit
   warn:
     MessageBox MB_OK "Unable to find java, exiting."

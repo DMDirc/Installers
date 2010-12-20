@@ -46,12 +46,17 @@ Section ""
       rename "$updateDir\.DMDircUpdater.exe" "$EXEDIR\DMDircUpdater.exe"
       delete "$updateDir\.DMDircUpdater.exe"
   checkUpdateLauncher:
-  IfFileExists .DMDirc.exe updateLauncher finish
+  IfFileExists .DMDirc.exe updateLauncher checkUpdateUninstaller
     updateLauncher:
       delete "$EXEDIR\DMDirc.exe"
       rename "$updateDir\.DMDirc.exe" "$EXEDIR\DMDirc.exe"
       delete "$updateDir\.DMDirc.exe"
-
+  checkUpdateUninstaller:
+  IfFileExists .Uninstaller.exe updateUninstaller finish
+    updateUninstaller:
+      delete "$EXEDIR\Uninstaller.exe"
+      rename "$updateDir\.Uninstaller.exe" "$EXEDIR\Uninstaller.exe"
+      delete "$updateDir\.Uninstaller.exe"
   finish:
     Exec 'DMDirc.exe'
 SectionEnd
