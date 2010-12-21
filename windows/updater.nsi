@@ -1,3 +1,7 @@
+!ifndef VERSION
+  !define VERSION "NONE"
+!endif
+
 !include "WordFunc.nsh"
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"

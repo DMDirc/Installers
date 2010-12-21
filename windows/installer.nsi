@@ -1,5 +1,9 @@
 SetCompressor /FINAL /SOLID lzma
 
+!ifndef VERSION
+  !define VERSION "NONE"
+!endif
+
 !include "MUI2.nsh"
 !include "MultiUser.nsh"
 !include "WordFunc.nsh"
