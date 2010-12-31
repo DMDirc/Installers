@@ -22,12 +22,7 @@ var updateDir
 
 Function .onInit
   setSilent silent
-  System::Call 'kernel32::CreateMutexA(i 0, i 0, t "DMDirc") ?e'
   Strcpy $updateDir $APPDATA\DMDirc
-  Pop $R0
-  StrCmp $R0 0 +3
-  MessageBox MB_OK "DMDirc is already running."
-  Abort
 
   ${GetParameters} $R0
   ${GetOptions} $R0 "-d " $R1
