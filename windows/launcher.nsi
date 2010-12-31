@@ -43,7 +43,7 @@ Function checkForUpdates
       rename "$updateDir\.DMDircUpdater.exe" "$EXEDIR\DMDircUpdater.exe"
       delete "$updateDir\.DMDircUpdater.exe"
   checkUpdateJar:
-  IfFileExists $updateDir\.DMDirc.jar checkUpdater continue
+  IfFileExists $updateDir\.DMDirc.jar updateJar checkUninstaller
     updateJar:
       delete "$EXEDIR\DMDirc.jar"
       rename "$updateDir\.DMDirc.jar" "$EXEDIR\DMDirc.jar"
