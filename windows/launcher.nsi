@@ -37,23 +37,11 @@ Function .onInit
 FunctionEnd
 
 Function checkForUpdates
-  IfFileExists $updateDir\.DMDircUpdater.exe updateUpdater checkUpdateJar
-    updateUpdater:
-      delete "$EXEDIR\DMDircUpdater.exe"
-      rename "$updateDir\.DMDircUpdater.exe" "$EXEDIR\DMDircUpdater.exe"
-      delete "$updateDir\.DMDircUpdater.exe"
+  IfFileExists $updateDir\.DMDircUpdater.exe update checkUpdateJar
   checkUpdateJar:
-  IfFileExists $updateDir\.DMDirc.jar updateJar checkUninstaller
-    updateJar:
-      delete "$EXEDIR\DMDirc.jar"
-      rename "$updateDir\.DMDirc.jar" "$EXEDIR\DMDirc.jar"
-      delete "$updateDir\.DMDirc.jar"
+  IfFileExists $updateDir\.DMDirc.jar update checkUninstaller
   checkUninstaller:
-  IfFileExists $updateDir\.Uninstaller.exe updateUninstaller checkLauncher
-    updateUninstaller:
-      delete "$EXEDIR\Uninstaller.exe"
-      rename "$updateDir\.Uninstaller.exe" "$EXEDIR\Uninstaller.exe"
-      delete "$updateDir\.Uninstaller.exe"
+  IfFileExists $updateDir\.Uninstaller.exe update checkLauncher
   checkLauncher:
   IfFileExists $updateDir\.DMDirc.exe update done
   update:
