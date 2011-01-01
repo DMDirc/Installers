@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ "remove" = "${1}" -o "upgrade" = "${1}" -o "deconfigure" = "${1}" ]; then
+	update-alternatives --quiet --remove irc.protocol /opt/dmdirc/irc.protocol
+
+	# TODO: Also remove from gnome
+fi;
+
+#DEBHELPER#
+
+exit 0;

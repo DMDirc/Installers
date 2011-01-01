@@ -30,24 +30,21 @@ showHelp() {
 	echo "-h, --help                Help information"
 	echo "-j, --jar <jar>           What jar to use for the package (requires --version)"
 	echo "-v, --version <version>   What version is this package."
-	echo "-p, --plugins <plugins>   What plugins to add to the jar file (requires --jar)"
 	echo "-u, --unsigned            Don't sign the output"
+	echo "-e, --extra <extra>       Extra tagging on output file."
 	echo "    --runtests            If building from source, also run tests and javadoc"
 	echo "---------------------"
 	exit 0;
 }
 
-plugins=""
 JAR=""
 VERSION=""
 SIGNED="true"
 TESTSANDJAVADOC="0"
+finalTag=""
+
 while test -n "$1"; do
 	case "$1" in
-		--plugins|-p)
-			shift
-			plugins=${1}
-			;;
 		--jar|-j)
 			shift
 			JAR=${1}
@@ -65,21 +62,20 @@ while test -n "$1"; do
 		--help|-h)
 			showHelp;
 			;;
+		--extra|-e)
+			shift
+			finalTag="-${1}"
+			;;
 	esac
 	shift
 done
 
-if [ "${PLUGINS}" != "" -a "${JAR}" = "" ]; then
-	echo "When providing a list of plugins, you must also provide a jar and a"
-	echo "version."
-	exit 1;
-fi;
 
 if [ "${JAR}" != "" -a "${VERSION}" = "" ]; then
 	echo "When providing a jar, you must also provide a version."
 	echo ""
 	echo "Providing neither will make a fresh checkout of the current source and"
-	echo "build that."
+	echo "build that. (Used to produce debian-uploadable packages)"
 	exit 1;
 fi;
 
@@ -94,21 +90,19 @@ BASEDIR=$(cd "${0%/*}" 2>/dev/null; echo $PWD)
 cd ${BASEDIR}
 
 # "debian" directory
-DEBDIR=${BASEDIR}/deb/debian
+DEBDIR=${BASEDIR}/deb
 
 # Where will we be building DMDirc today?
 BUILDDIR=`mktemp -d "--tmpdir=${BASEDIR}"`
 
 echo "Building in: '${BUILDDIR}'"
 
-mkdir -p "${BUILDDIR}/debian"
-
 # Options to pass to DPKG.
 DPKGOPTS=""
 
 # If we are not given a jar to use, then we produce a full-source build.
 # This will produce files ready for upload to debian.
-if [ "${JAR}" = "" ]; then
+if [ "${JAR}" = "" -o ! -e "${JAR}" ]; then
 	# Clone a copy of the repo to the temp dir
 	git clone git://dmdirc.com/client "${BUILDDIR}"
 	
@@ -121,19 +115,22 @@ if [ "${JAR}" = "" ]; then
 
 	# What version of the client is this?
 	VERSION=`git describe --tags --always`
-
-	# Lets not bother running the tests and the javadoc when building a deb.
-	if [ "${TESTSANDJAVADOC}" != "1" ]; then
-		sed -i 's@<target depends="test,jar,javadoc" description="Build and test whole project." name="default"/>@<target depends="jar" description="Build and test whole project." name="default"/>@' nbproject/build-impl.xml
-	fi
-
-	# Remove the .git dir as we don't want to include this in anything
-	rm -Rf .git
 else
 	cp "${JAR}" "${BUILDDIR}/DMDirc.jar"
   
 	# Change into the temp dir
 	cd "${BUILDDIR}"
+
+	# Modify the version.config for debian-ness
+	jar -xf DMDirc.jar com/dmdirc/version.config
+	cat <<EOF >>com/dmdirc/version.config
+	
+version:
+    noupdates=true
+EOF
+	# Update the version in the jar
+	jar uf DMDirc.jar com/dmdirc/version.config;
+	rm -Rf com
 
 	# Create a simple build.xml that will satisfy dpkg-buildpackage
 	cat <<EOF >build.xml
@@ -145,20 +142,26 @@ else
 		<delete dir="dist" />
 	</target>
 
-	<target description="Build project." name="default">
+	<target description="Do Nothing" name="with.disabled.updater" />
+
+	<target description="Build project." name="default" depends="jar" />
+
+	<target description="Build project." name="jar">
 		<copy file="DMDirc.jar" tofile="dist/DMDirc.jar" overwrite="true" />
 	</target>
 </project>
 EOF
 
-	DPKGOPTS=
+	DPKGOPTS=" -A"
 fi;
 
 # Copy in the debian rules
-cp -Rf "${DEBDIR}" .
+mkdir -p "${BUILDDIR}/debian"
+cp -Rfv "${DEBDIR}/"* .
+cp -Rfv ../../../src/com/dmdirc/res/source/logo.svg icon.svg
 
 # Include function for creating Debain Versions
-. ${BASEDIR}/debianVersion.sh;
+. "${DEBDIR}/debianVersion.sh";
 
 # Create a Debain Version from the DMDirc version.
 DEBIANVERSION=$(debianVersion "${VERSION}" "${DEBIANREVISION}" "${DEBIANEPOCH}")
@@ -180,13 +183,24 @@ EOF
 if [ "${SIGNED}" != "true" ]; then
 	DPKGOPTS=" -uc -us"
 fi;
-dpkg-buildpackage -A
 
-# Nice output directory
+dpkg-buildpackage ${DPKGOPTS}
+
+# Move the resulting files to the output directory.
 cd "${BASEDIR}"
-mkdir -p output/debian
-mv dmdirc_${DEBIANVERSION}*.* output/debian
-mv output/debian/dmdirc_${DEBIANVERSION}*.deb output
+mkdir -p "output/debian"
+mv "dmdirc_${DEBIANVERSION}"*.* "output/debian"
+
+# Copy the files we actually care about into the output directory
+SRC=`ls -1 "output/debian/dmdirc_${DEBIANVERSION}"*".deb"`
+
+if [ "${VERSION}" != "" ]; then
+	DEST="DMDirc-${VERSION}${finalTag}.deb"
+else
+	DEST="${INSTALLNAME}${finalTag}.deb"
+fi;
+
+mv "${SRC}" "output/${DEST}"
 
 # Clean Up
-#rm -Rf "${BUILDDIR}"
+rm -Rf "${BUILDDIR}"

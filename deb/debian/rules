@@ -1,17 +1,19 @@
 #!/usr/bin/make -f
 
+include /usr/share/cdbs/1/class/ant.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+
 JAVA_HOME=/usr/lib/jvm/default-java
-VERSION=$(shell cat dmdirc-version)
+DEB_ANT_COMPILER=ant
+DEB_ANT_BUILD_TARGET=with.disabled.updater jar
 
-%:
-	dh $@ --with javahelper
+# Without this, cdbs seems to try something strange which makes it unabel to
+# find some of the ant tasks.
+# So lets just do it normally.
+DEB_ANT_INVOKE= cd $(DEB_BUILDDIR) && ant
 
-override_dh_link:
-
-
-# dh_link opt/dmdirc/dmdirc.sh usr/bin/dmdirc
-
-override_dh_auto_test:
+# Used by get-source and get-orig-souce
+PACKAGE_VERSION := $(shell cat dmdirc-version)
 
 # Get the source and the version
 get-source:

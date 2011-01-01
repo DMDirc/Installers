@@ -1,1 +1,5 @@
 dist/DMDirc.jar opt/dmdirc
+DMDirc.sh opt/dmdirc
+icon.svg opt/dmdirc
+irc.protocol opt/dmdirc
+dmdirc.desktop usr/share/applications/

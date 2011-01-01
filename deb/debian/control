@@ -2,8 +2,8 @@ Source: dmdirc
 Priority: extra
 Maintainer: Shane Mc Cormack <shane@dmdirc.com>
 Uploaders: Chris Smith <chris@dmdirc.com>, Greg Holmes <greg@dmdirc.com>, Simon Mott <simon@dmdirc.com>
-Build-Depends: debhelper (>= 7.0.50~), javahelper (>=0.25)
-Build-Depends-Indep: default-jdk, ant, git-core
+Build-Depends: cdbs (>= 0.4.36), debhelper (>= 7.0.50~), javahelper (>=0.25)
+Build-Depends-Indep: default-jdk, ant-optional, git-core
 Standards-Version: 3.9.0
 Vcs-Git: git://dmdirc.com/client
 Vcs-browser: http://git.dmdirc.com/client/

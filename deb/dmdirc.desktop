@@ -1,0 +1,12 @@
+[Desktop Entry]
+Categories=Network;IRCClient;
+Comment=DMDirc IRC Client
+Encoding=UTF-8
+Exec=/usr/bin/DMDirc
+GenericName=IRC Client
+Icon=/opt/dmdirc/icon.svg
+Name=DMDirc
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application

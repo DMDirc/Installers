@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ "configure" = "${1}" ]; then
+	update-alternatives --quiet --install /usr/share/services/irc.protocol irc.protocol /opt/dmdirc/irc.protocol 50
+
+	# TODO: Also add to gnome
+fi;
+
+#DEBHELPER#
+
+exit 0;
