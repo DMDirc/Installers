@@ -147,3 +147,20 @@ Function .onInit
     ${UnSelectSection} ${SecQuickLaunch}
   ${EndIf}
 FunctionEnd
+
+Function un.onInit
+  checkRunning:
+    ClearErrors
+    FileOpen $R0 "$INSTDIR\DMDirc.exe" a
+    ${If} ${Errors}
+      MessageBox MB_YESNO|MB_ICONEXCLAMATION \
+      "DMDirc is open, uninstallation cannot continue. Try again?" \
+      IDYES checkRunning IDNO abort
+    ${ELSE}
+      GoTo continue
+    ${EndIf}
+    FileClose $R0
+  abort:
+    Abort
+  continue:
+FunctionEnd
