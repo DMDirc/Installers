@@ -60,7 +60,7 @@ Var StartMenuFolder
 Section "DMDirc" SecDMDirc
   SectionIn RO
   SetOutPath "$INSTDIR"
-  SetOverwrite ifnewer
+  SetOverwrite on
 
   call DownloadAndInstallJREIfNecessary
 
