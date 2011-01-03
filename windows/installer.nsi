@@ -28,7 +28,7 @@ Name "DMDirc"
 BrandingText " "
 Icon "files\icon.ico"
 UninstallIcon "files\icon.ico"
-OutFile "..\output\DMDirc-${VERSION}-Setup.exe"
+OutFile "..\output\DMDirc-Setup.exe"
 
 ;Default installation folder
 InstallDir "$PROGRAMFILES\DMDirc"
