@@ -1,5 +1,5 @@
 /*
-Copyright © 2009 Kevin Day nsis@trumpetinc.com
+Copyright (c) 2009 Kevin Day nsis@trumpetinc.com
 
  Permission to use, copy, modify, distribute and sell this software or any part
  thereof and/or its documentation for any purpose is granted without fee provided
@@ -118,12 +118,8 @@ downloadsuccessful:
 
 
   DetailPrint "Launching JRE setup"
-  
-  IfSilent doSilent
-  ExecWait '"$TEMP\jre_setup.exe" /passive REBOOT=Suppress JAVAUPDATE=0 WEBSTARTICON=0 /L \"$TEMP\jre_setup.log\"' $0
-  goto jreSetupfinished
-doSilent:
-  ExecWait '"$TEMP\jre_setup.exe" /S REBOOT=Suppress JAVAUPDATE=0 WEBSTARTICON=0 /L \"$TEMP\jre_setup.log\"' $0
+
+  ExecWait '"$TEMP\jre_setup.exe" /s /v$\"/qn REBOOT=Suppress WEBSTARTICON=0 /L $TEMP\jre_setup.log$\"' $0
   
 
 jreSetupFinished:
