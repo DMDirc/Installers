@@ -7,9 +7,6 @@
 !include "FileFunc.nsh"
 !include "MUI2.nsh"
 
-!define JRE_VERSION "1.6"
-!define JRE_URL "www.dmdirc.com/getjava.php?os=windows"
-
 !include "JREDyna.nsh"
 
 Name "Launcher"
@@ -58,17 +55,21 @@ Section "launch"
   push $1
   push $2
   
-  
   Push "${JRE_VERSION}"
   Call DetectJRE
   Pop $0
   Pop $1
   StrCmp $0 "OK" continue warn
   continue:
-  ExecWait '"$1\bin\javaw.exe" -ea -jar DMDirc.jar -l windows-${VERSION} $R0' $0
+  StrCmp ${VERSION} "" unversioned versioned
+  unversioned:
+    ExecWait '"$1\bin\javaw.exe" -ea -jar DMDirc.jar -l windows-NONE $R0' $0
+  versioned:
+    ExecWait '"$1\bin\javaw.exe" -ea -jar DMDirc.jar -l windows-${VERSION} $R0' $0
   strcmp $0 42 runclient exit
   warn:
     MessageBox MB_OK "Unable to find java, exiting."
 
   exit:
+
 SectionEnd

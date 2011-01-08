@@ -9,6 +9,7 @@ SetCompressor /FINAL /SOLID lzma
 !include "WordFunc.nsh"
 !include "LogicLib.nsh"
 !include "WinVer.nsh"
+!include "x64.nsh"
 
 !define SF_USELECTED  0
 !define MUI_ABORTWARNING
@@ -19,8 +20,6 @@ SetCompressor /FINAL /SOLID lzma
 !define MUI_ICON "files\icon.ico"
 !define MUI_UNICON "files\icon.ico"
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\DMDirc"
-!define JRE_VERSION "1.6"
-!define JRE_URL "www.dmdirc.com/getjava.php?os=windows"
 
 !include "JREDyna.nsh"
 
@@ -143,6 +142,15 @@ SectionEnd
 !define UnSelectSection '!insertmacro SecUnSelect'
 
 Function .onInit
+  ${If} ${RunningX64}
+    ${DisableX64FSRedirection}
+    SetRegView 64
+    StrCpy $INSTDIR "$PROGRAMFILES64\DMDirc"
+  ${Else}
+    ${EnableX64FSRedirection}
+    SetRegView 32
+    StrCpy $INSTDIR "$PROGRAMFILES32\DMDirc"
+  ${EndIf}
   ${If} ${IsWin7}
     ${UnSelectSection} ${SecQuickLaunch}
   ${EndIf}
@@ -163,4 +171,15 @@ Function un.onInit
   abort:
     Abort
   continue:
+    ${If} ${RunningX64}
+      ${DisableX64FSRedirection}
+      SetRegView 64
+      ReadRegStr $0 HKLM "${UNINST_KEY}" "InstallLocation"
+      StrCpy $INSTDIR "$PROGRAMFILES64\DMDirc"
+    ${Else}
+      ${EnableX64FSRedirection}
+      SetRegView 32
+      ReadRegStr $0 HKLM "${UNINST_KEY}" "InstallLocation"
+      StrCpy $INSTDIR $0
+    ${EndIf}
 FunctionEnd

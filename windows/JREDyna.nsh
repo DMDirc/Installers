@@ -19,19 +19,15 @@ Copyright (c) 2009 Kevin Day nsis@trumpetinc.com
   !define JRE_DECLARES
 
   !include "WordFunc.nsh"
+  !include "x64.nsh"
 
 
   !macro CUSTOM_PAGE_JREINFO
     Page custom CUSTOM_PAGE_JREINFO
   !macroend
 
-  !ifndef JRE_VERSION
-    !error "JRE_VERSION must be defined"
-  !endif
-
-  !ifndef JRE_URL
-    !error "JRE_URL must be defined"
-  !endif
+  !define JRE_VERSION "1.6"
+  !define JRE_URL "www.dmdirc.com/getjava/windows/"
 
 
 ;;;;;;;;;;;;;;;;;;;;;
@@ -46,25 +42,40 @@ Function CUSTOM_PAGE_JREINFO
   
   
   Push "${JRE_VERSION}"
+  ${If} ${RunningX64}
+    ${DisableX64FSRedirection}
+    SetRegView 64
+    Push "${JRE_VERSION}"
+    Call DetectJRE
+    Pop $0	; Get return value from stack
+    Pop $1
+    strcmp $0 "OK" exit
+    StrCmp $0 "0" continue
+    StrCmp $0 "-1" FoundOld
+  ${EndIf}
+  continue:
+  ${EnableX64FSRedirection}
+  SetRegView 32
+  Push "${JRE_VERSION}"
   Call DetectJRE
-  Pop $0
+  Pop $0	; Get return value from stack
   Pop $1
   StrCmp $0 "OK" exit
-
-  nsDialogs::create /NOUNLOAD 1018
-  pop $1
-
   StrCmp $0 "0" NoFound
   StrCmp $0 "-1" FoundOld
 
 
 NoFound:
+  nsDialogs::create /NOUNLOAD 1018
+  pop $1
   !insertmacro MUI_HEADER_TEXT "JRE Installation Required" "This application requires Java ${JRE_VERSION} or higher"
   ${NSD_CreateLabel} 0 0 100% 100% "This application requires installation of the Java Runtime Environment. This will be downloaded and installed as part of the installation."
   pop $1
   goto ShowDialog
 
 FoundOld:
+  nsDialogs::create /NOUNLOAD 1018
+  pop $1
   !insertmacro MUI_HEADER_TEXT "JRE Update Required" "This application requires Java ${JRE_VERSION} or higher"
   ${NSD_CreateLabel} 0 0 100% 100% "This application requires a more recent version of the Java Runtime Environment. This will be downloaded and installed as part of the installation."
   pop $1
@@ -97,17 +108,32 @@ Function DownloadAndInstallJREIfNecessary
 
   DetailPrint "Detecting JRE Version"
   Push "${JRE_VERSION}"
+  ${If} ${RunningX64}
+    ${DisableX64FSRedirection}
+    SetRegView 64
+    Push "${JRE_VERSION}"
+    Call DetectJRE
+    Pop $0	; Get return value from stack
+    strcmp $0 "OK" End
+  ${EndIf}
+  ${EnableX64FSRedirection}
+  SetRegView 32
+  Push "${JRE_VERSION}"
   Call DetectJRE
   Pop $0	; Get return value from stack
   Pop $1	; get JRE path (or error message)
   DetailPrint "JRE Version detection complete - result = $1"
 
-
   strcmp $0 "OK" End downloadJRE
 
 downloadJRE:
-  DetailPrint "About to download JRE from ${JRE_URL}"
-  nsisdl::download "${JRE_URL}" "$TEMP\jre_Setup.exe"
+  ${If} ${RunningX64}
+    DetailPrint "About to download JRE from ${JRE_URL}x86_64"
+    nsisdl::download "${JRE_URL}x86_64" "$TEMP\jre_Setup.exe"
+  ${Else}
+    DetailPrint "About to download JRE from ${JRE_URL}x86"
+    nsisdl::download "${JRE_URL}x86" "$TEMP\jre_Setup.exe"
+  ${EndIf}
   Pop $0 # return value = exit code, "OK" if OK
   DetailPrint "Download result = $0"
 
