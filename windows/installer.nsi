@@ -39,7 +39,7 @@ Var StartMenuFolder
 
 !insertmacro VersionCompare
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "..\..\..\src\com\dmdirc\licences\DMDirc - MIT"
+!insertmacro MUI_PAGE_LICENSE "licence.txt"
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro CUSTOM_PAGE_JREINFO
