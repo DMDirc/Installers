@@ -6,10 +6,9 @@
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"
 
-RequestExecutionLevel admin
 Name "Launcher"
 OutFile "files\DMDircUpdater.exe"
-RequestExecutionLevel user
+RequestExecutionLevel admin
 Icon "files\icon.ico"
 UninstallIcon "files\icon.ico"
 

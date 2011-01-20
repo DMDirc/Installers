@@ -6,6 +6,7 @@
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"
 !include "MUI2.nsh"
+!include "UAC\UAC.nsh"
 
 !include "JREDyna.nsh"
 
@@ -42,7 +43,7 @@ Function checkForUpdates
   checkLauncher:
   IfFileExists $updateDir\.DMDirc.exe update done
   update:
-    Exec 'DMDircUpdater.exe'
+    !insertmacro UAC_AsUser_ExecShell "" "DMDircUpdater.exe" "" "" ""
     Quit
   done:
 FunctionEnd
