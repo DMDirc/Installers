@@ -10,6 +10,7 @@ SetCompressor /FINAL /SOLID lzma
 !include "LogicLib.nsh"
 !include "WinVer.nsh"
 !include "x64.nsh"
+!include "licence.nsh"
 
 !define SF_USELECTED  0
 !define MUI_ABORTWARNING
@@ -39,7 +40,7 @@ Var StartMenuFolder
 
 !insertmacro VersionCompare
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "licence.txt"
+!insertmacro CUSTOM_PAGE_LICENCE
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro CUSTOM_PAGE_JREINFO
