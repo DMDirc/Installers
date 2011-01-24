@@ -2,6 +2,7 @@
   !define VERSION "NONE"
 !endif
 
+!addplugindir "UAC"
 !include "WordFunc.nsh"
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"
