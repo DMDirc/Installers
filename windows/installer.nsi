@@ -76,7 +76,7 @@ Section "DMDirc" SecDMDirc
   WriteRegDWORD HKLM "${UNINST_KEY}" "NoModify" 1
   WriteRegDWORD HKLM "${UNINST_KEY}" "NoRepair" 1
   WriteRegStr HKLM "${UNINST_KEY}" "Comments" "DMDirc - The intelligent IRC client"
-  WriteRegStr HKLM "${UNINST_KEY}" "InstallLocation" "$\"$INSTDIR$\""
+  WriteRegStr HKLM "${UNINST_KEY}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKLM "${UNINST_KEY}" "StartMenuPath" "$\"$StartMenuFolder$\""
 
   ;Create uninstaller
@@ -119,7 +119,12 @@ LangString DESC_SecProtocol ${LANG_ENGLISH} "Register DMDirc as a protocol handl
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section "Uninstall"
-  RMDir /r "$INSTDIR"
+  Delete "$INSTDIR\Uninstall.exe"
+  Delete "$INSTDIR\DMDirc.jar"
+  Delete "$INSTDIR\DMDircUpdater.exe"
+  Delete "$INSTDIR\icon.ico"
+  Delete "$INSTDIR\DMDirc.exe"
+  RmDir $INSTDIR
 
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   RMDir /r "$SMPROGRAMS\$StartMenuFolder"
@@ -165,6 +170,7 @@ Function un.onInit
       "DMDirc is open, uninstallation cannot continue. Try again?" \
       IDYES checkRunning IDNO abort
     ${ELSE}
+      FileClose $R0
       GoTo continue
     ${EndIf}
     FileClose $R0
