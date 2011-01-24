@@ -5,7 +5,6 @@ SetCompressor /FINAL /SOLID lzma
 !endif
 
 !include "MUI2.nsh"
-!include "MultiUser.nsh"
 !include "WordFunc.nsh"
 !include "LogicLib.nsh"
 !include "WinVer.nsh"
