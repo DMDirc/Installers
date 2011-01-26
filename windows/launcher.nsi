@@ -2,12 +2,12 @@
   !define VERSION "NONE"
 !endif
 
-!addplugindir "UAC"
+!addplugindir "plugins"
 !include "WordFunc.nsh"
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"
 !include "MUI2.nsh"
-!include "UAC\UAC.nsh"
+!include "UAC.nsh"
 
 !include "JREDyna.nsh"
 

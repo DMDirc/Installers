@@ -4,6 +4,7 @@ SetCompressor /FINAL /SOLID lzma
   !define VERSION "NONE"
 !endif
 
+!addplugindir "plugins"
 !include "MUI2.nsh"
 !include "WordFunc.nsh"
 !include "LogicLib.nsh"
@@ -57,6 +58,7 @@ Var StartMenuFolder
 
 
 Section "DMDirc" SecDMDirc
+  w7tbp::Start
   SectionIn RO
   SetOutPath "$INSTDIR"
   SetOverwrite on
@@ -119,6 +121,7 @@ LangString DESC_SecProtocol ${LANG_ENGLISH} "Register DMDirc as a protocol handl
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section "Uninstall"
+  w7tbp::Start
   Delete "$INSTDIR\Uninstall.exe"
   Delete "$INSTDIR\DMDirc.jar"
   Delete "$INSTDIR\DMDircUpdater.exe"
