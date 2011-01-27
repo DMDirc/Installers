@@ -31,6 +31,7 @@ showHelp() {
 	echo "-j, --jar <jar>           What jar to use for the package (requires --version)"
 	echo "-v, --version <version>   What version is this package."
 	echo "-u, --unsigned            Don't sign the output"
+	echo "-p, --packagename <name>  Name for output (rather than DMDirc-<version>"
 	echo "-e, --extra <extra>       Extra tagging on output file."
 	echo "    --runtests            If building from source, also run tests and javadoc"
 	echo "---------------------"
@@ -42,7 +43,7 @@ VERSION=""
 SIGNED="true"
 TESTSANDJAVADOC="0"
 finalTag=""
-
+PACKAGENAME=""
 while test -n "$1"; do
 	case "$1" in
 		--jar|-j)
@@ -62,9 +63,13 @@ while test -n "$1"; do
 		--help|-h)
 			showHelp;
 			;;
+		--packagename|-p)
+			shift
+			PACKAGENAME="${1}"
+			;;
 		--extra|-e)
 			shift
-			finalTag="-${1}"
+			finalTag="${1}"
 			;;
 	esac
 	shift
@@ -194,11 +199,15 @@ mv "dmdirc_${DEBIANVERSION}"*.* "output/debian"
 # Copy the files we actually care about into the output directory
 SRC=`ls -1 "output/debian/dmdirc_${DEBIANVERSION}"*".deb"`
 
-if [ "${VERSION}" != "" ]; then
-	DEST="DMDirc-${VERSION}${finalTag}.deb"
+if [ "${PACKAGENAME}" = "" ]; then
+	DEST="DMDirc-${VERSION}"
 else
-	DEST="${INSTALLNAME}${finalTag}.deb"
+	DEST="${PACKAGENAME}"
+fi
+if [ "${finalTag}" != "" ]; then
+	DEST="${DEST}-${finalTag}"
 fi;
+DEST="${DEST}.deb"
 
 mv "${SRC}" "output/${DEST}"
 

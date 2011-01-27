@@ -30,6 +30,7 @@ showHelp() {
 	echo "-h, --help                Help information"
 	echo "-j, --jar <jar>           What jar to use for the package (requires --version)"
 	echo "-v, --version <version>   What version is this package."
+	echo "-p, --packagename <name>  Name for output (rather than DMDirc-<version>"
 	echo "-e, --extra <extra>       Extra tagging on output file."
 	echo "---------------------"
 	exit 0;
@@ -38,7 +39,7 @@ showHelp() {
 JAR=""
 VERSION=""
 finalTag=""
-
+PACKAGENAME=""
 while test -n "$1"; do
 	case "$1" in
 		--jar|-j)
@@ -52,9 +53,13 @@ while test -n "$1"; do
 		--help|-h)
 			showHelp;
 			;;
+		--packagename|-p)
+			shift
+			PACKAGENAME="${1}"
+			;;
 		--extra|-e)
 			shift
-			finalTag="-${1}"
+			finalTag="${1}"
 			;;
 	esac
 	shift
@@ -262,11 +267,15 @@ else
 	rm "${OUTPUTFILE}.pre"
 fi;
 
-if [ "${VERSION}" != "" ]; then
-	DEST="DMDirc-${VERSION}${finalTag}.dmg"
+if [ "${PACKAGENAME}" = "" ]; then
+	DEST="DMDirc-${VERSION}"
 else
-	DEST="DMDirc${finalTag}.dmg"
+	DEST="${PACKAGENAME}"
+fi
+if [ "${finalTag}" != "" ]; then
+	DEST="${DEST}-${finalTag}"
 fi;
+DEST="${DEST}.dmg"
 
 mv "${OUTPUTFILE}" "output/${DEST}"
 

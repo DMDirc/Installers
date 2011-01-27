@@ -31,6 +31,7 @@ showHelp() {
 	echo "-j, --jar <jar>           What jar to use for the package (requires --version)"
 	echo "-v, --version <version>   What version is this package."
 	echo "-u, --unsigned            Don't sign the output"
+	echo "-p, --packagename <name>  Name for output (rather than DMDirc-<version>"
 	echo "-e, --extra <extra>       Extra tagging on output file."
 	echo "---------------------"
 	exit 0;
@@ -40,7 +41,7 @@ JAR=""
 VERSION=""
 signEXE="true"
 finalTag=""
-
+PACKAGENAME=""
 while test -n "$1"; do
 	case "$1" in
 		--jar)
@@ -56,7 +57,11 @@ while test -n "$1"; do
 			;;
 		--extra|-e)
 			shift
-			finalTag="-${1}"
+			finalTag="${1}"
+			;;
+		--packagename|-p)
+			shift
+			PACKAGENAME="${1}"
 			;;
 		--help|-h)
 			showHelp;
@@ -102,11 +107,15 @@ done
 cd "${OLDDIR}"
 SRC="output/DMDirc-Setup.exe"
 
-if [ "${VERSION}" != "" ]; then
-	DEST="DMDirc-Setup-${VERSION}${finalTag}.exe"
+if [ "${PACKAGENAME}" = "" ]; then
+	DEST="DMDirc-Setup-${VERSION}"
 else
-	DEST="DMDirc-Setup${finalTag}.exe"
+	DEST="${PACKAGENAME}"
+fi
+if [ "${finalTag}" != "" ]; then
+	DEST="${DEST}-${finalTag}"
 fi;
+DEST="${DEST}.exe"
 
 mv "${SRC}" "output/${DEST}"
 

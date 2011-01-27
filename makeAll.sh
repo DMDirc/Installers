@@ -30,6 +30,7 @@ showHelp() {
 	echo "-j, --jar <jar>           What jar to use for the package (requires --version)"
 	echo "-v, --version <version>   What version is this package."
 	echo "-e, --extra <extra>       Extra tagging on output file."
+	echo "-p, --packagename <name>  Name for output (rather than DMDirc-<version>"
 	echo "-c, --channel <channel>   Channel to pass to ant (if not passed, 'NONE', if passed without a value, 'STABLE')"
 	echo "                          (only applicable when building a fresh jar)"
 	echo "    --upload              Upload output files to google code."
@@ -42,6 +43,7 @@ VERSION=""
 finalTag=""
 UPLOAD="0"
 CHANNEL="NONE"
+PACKAGENAME=""
 while test -n "$1"; do
 	case "$1" in
 		--jar|-j)
@@ -54,6 +56,10 @@ while test -n "$1"; do
 			;;
 		--help|-h)
 			showHelp;
+			;;
+		--packagename|-p)
+			shift
+			PACKAGENAME="${1}"
 			;;
 		--extra|-e)
 			shift
@@ -155,36 +161,36 @@ else
 	cp "${JAR}" "${OUTPUT}/DMDirc.jar"
 fi;
 
-if [ "${finalTag}" != "" ]; then
-	FINALNAME="DMDirc-${VERSION}-${finalTag}.jar"
+if [ "${PACKAGENAME}" = "" ]; then
+	FINALNAME="DMDirc-${VERSION}"
 else
-	FINALNAME="DMDirc-${VERSION}.jar"
+	FINALNAME="${PACKAGENAME}"
+fi
+if [ "${finalTag}" != "" ]; then
+	FINALNAME="${FINALNAME}-${finalTag}"
 fi;
+FINALNAME="${FINALNAME}.jar"
 
 mv "${OUTPUT}/DMDirc.jar" "${OUTPUT}/${FINALNAME}"
 
 JAR="${OUTPUT}/${FINALNAME}"
 
-if [ "${finalTag}" != "" ]; then
-	EXTRAARGS=" --extra \"${finalTag}\""
-fi;
-
 echo "================================================================"
 echo "Making Deb"
 echo "================================================================"
-./makeDEB.sh --jar "${JAR}" --version "${VERSION}"${EXTRAARGS}
+./makeDEB.sh --jar "${JAR}" --version "${VERSION}" --extra "${finalTag}" --packagename "${PACKAGENAME}"
 echo "================================================================"
 
 echo "================================================================"
 echo "Making EXE"
 echo "================================================================"
-./makeNSIS.sh --jar "${JAR}" --version "${VERSION}"${EXTRAARGS}
+./makeNSIS.sh --jar "${JAR}" --version "${VERSION}" --extra "${finalTag}" --packagename "${PACKAGENAME}"
 echo "================================================================"
 
 echo "================================================================"
 echo "Making DMG"
 echo "================================================================"
-./makeDMG.sh --jar "${JAR}" --version "${VERSION}"${EXTRAARGS}
+./makeDMG.sh --jar "${JAR}" --version "${VERSION}" --extra "${finalTag}" --packagename "${PACKAGENAME}"
 echo "================================================================"
 
 
@@ -200,17 +206,24 @@ if [ "${ALIEN}" != "" -a "${FAKEROOT}" != "" ]; then
 	CURDIR=`pwd`
 	cd ${OUTPUT}
 
+	OUTNAME="DMDirc-${VERSION}"
+	if [ "${finalTag}" != "" ]; then
+		OUTNAME="${OUTNAME}-${finalTag}"
+	fi;
+		
 	# Theres no point passing --scripts here as the scripts expect debian
 	# parameters. which won't be given.
 	#
 	# The scripts only make us a protocol handler for irc, so missing them
-	# isn't really a huge issue.
-	${FAKEROOT} ${ALIEN} --to-rpm DMDirc-${VERSION}.deb
-	${FAKEROOT} ${ALIEN} --to-tgz DMDirc-${VERSION}.deb
+	# isn't really a huge issu.
+	${FAKEROOT} ${ALIEN} --to-rpm "${OUTNAME}.deb"
+	# Slackware ftl, tgz files may be confusing to some people not expecting
+	# a strange package format.
+	${FAKEROOT} ${ALIEN} --to-tgz "${OUTNAME}.tgz"
 
-	mv dmdirc-*.rpm DMDirc-${VERSION}.rpm
-	mv dmdirc-*.tgz DMDirc-${VERSION}.tgz
-	
+	mv dmdirc-*.rpm "${OUTNAME}.rpm"
+	mv dmdirc-*.tgz "${OUTNAME}.tgz"
+
 	cd ${CURDIR}
 fi;
 echo "================================================================"
