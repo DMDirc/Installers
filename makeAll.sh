@@ -206,11 +206,15 @@ if [ "${ALIEN}" != "" -a "${FAKEROOT}" != "" ]; then
 	CURDIR=`pwd`
 	cd ${OUTPUT}
 
-	OUTNAME="DMDirc-${VERSION}"
+	if [ "${PACKAGENAME}" = "" ]; then
+		OUTNAME="DMDirc-${VERSION}"
+	else
+		OUTNAME="${PACKAGENAME}"
+	fi
 	if [ "${finalTag}" != "" ]; then
 		OUTNAME="${OUTNAME}-${finalTag}"
 	fi;
-		
+
 	# Theres no point passing --scripts here as the scripts expect debian
 	# parameters. which won't be given.
 	#
@@ -219,6 +223,7 @@ if [ "${ALIEN}" != "" -a "${FAKEROOT}" != "" ]; then
 	${FAKEROOT} ${ALIEN} --to-rpm "${OUTNAME}.deb"
 	# Slackware ftl, tgz files may be confusing to some people not expecting
 	# a strange package format.
+	echo "Creating TGZ"
 	${FAKEROOT} ${ALIEN} --to-tgz "${OUTNAME}.tgz"
 
 	mv dmdirc-*.rpm "${OUTNAME}.rpm"
@@ -227,6 +232,8 @@ if [ "${ALIEN}" != "" -a "${FAKEROOT}" != "" ]; then
 	cd ${CURDIR}
 fi;
 echo "================================================================"
+
+ls ${OUTPUT}
 
 echo "Done."
 

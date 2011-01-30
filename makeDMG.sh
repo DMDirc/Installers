@@ -141,30 +141,31 @@ echo "Building in: '${BUILDDIR}'"
 
 # Create required OS X directories.
 APPDIR="${BUILDDIR}/DMDirc.app"
-CONTENTSDIR=${APPDIR}/Contents
-RESDIR=${CONTENTSDIR}/Resources
-MACOSDIR=${CONTENTSDIR}/MacOS
+CONTENTSDIR="${APPDIR}/Contents"
+RESDIR="${CONTENTSDIR}/Resources"
+MACOSDIR="${CONTENTSDIR}/MacOS"
 
-mkdir -pv ${APPDIR}
-mkdir -pv ${CONTENTSDIR}
-mkdir -pv ${RESDIR}
-mkdir -pv ${RESDIR}/Java
-mkdir -pv ${MACOSDIR}
+mkdir -pv "${APPDIR}"
+mkdir -pv "${CONTENTSDIR}"
+mkdir -pv "${RESDIR}"
+mkdir -pv "${RESDIR}/Java"
+mkdir -pv "${MACOSDIR}"
+mkdir -pv "${APPDIR}/.background/"
 
 # Copy in required files.
 cp "${JAR}" "${RESDIR}/Java/DMDirc.jar"
 cp "launcher/unix/DMDirc.sh" "${MACOSDIR}/DMDirc.sh"
 cp "launcher/unix/functions.sh" "${MACOSDIR}/functions.sh"
 cp "osx/res/dmdirc.icns" "${RESDIR}/dmdirc.icns"
-cp -v "osx/res/VolumeIcon.icns" "${DMG}/.VolumeIcon.icns"
-cp -v "osx/res/Background.png" "${DMG}/.background/background.png"
-cp -v "osx/.DS_Store" "${DMG}/.DS_Store"
+cp -v "osx/res/VolumeIcon.icns" "${APPDIR}/.VolumeIcon.icns"
+cp -v "osx/res/Background.png" "${APPDIR}/.background/background.png"
+cp -v "osx/.DS_Store" "${APPDIR}/.DS_Store"
 
 echo "Creating meta files"
-echo "APPLDMDI" > ${CONTENTSDIR}/PkgInfo
+echo "APPLDMDI" > "${CONTENTSDIR}/PkgInfo"
 
 # Create the plist file
-cat <<EOF> ${CONTENTSDIR}/Info.plist
+cat <<EOF> "${CONTENTSDIR}/Info.plist"
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
