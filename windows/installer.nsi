@@ -65,7 +65,10 @@ Section "DMDirc" SecDMDirc
 
   call DownloadAndInstallJREIfNecessary
 
+
+  ${DisableX64FSRedirection}
   File /nonfatal /r "files\*.*"
+  ${EnableX64FSRedirection}
 
   ;Store installation folder
   WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "DMDirc"
@@ -154,6 +157,7 @@ Function .onInit
     ${DisableX64FSRedirection}
     SetRegView 64
     StrCpy $INSTDIR "$PROGRAMFILES64\DMDirc"
+    ${EnableX64FSRedirection}
   ${Else}
     ${EnableX64FSRedirection}
     SetRegView 32
