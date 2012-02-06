@@ -114,6 +114,7 @@ Function DownloadAndInstallJREIfNecessary
     Push "${JRE_VERSION}"
     Call DetectJRE
     Pop $0	; Get return value from stack
+    Pop $1	; get JRE path (or error message)
     strcmp $0 "OK" End
   ${EndIf}
   ${EnableX64FSRedirection}

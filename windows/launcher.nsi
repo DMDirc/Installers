@@ -58,6 +58,18 @@ Section "launch"
   push $2
   
   Push "${JRE_VERSION}"
+  ${If} ${RunningX64}
+    ${DisableX64FSRedirection}
+    SetRegView 64
+    Push "${JRE_VERSION}"
+    Call DetectJRE
+    Pop $0	; Get return value from stack
+    Pop $1	; get JRE path (or error message)
+    strcmp $0 "OK" continue
+  ${EndIf}
+  ${EnableX64FSRedirection}
+  SetRegView 32
+  Push "${JRE_VERSION}"
   Call DetectJRE
   Pop $0
   Pop $1
