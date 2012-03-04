@@ -150,16 +150,17 @@ mkdir -pv "${CONTENTSDIR}"
 mkdir -pv "${RESDIR}"
 mkdir -pv "${RESDIR}/Java"
 mkdir -pv "${MACOSDIR}"
-mkdir -pv "${APPDIR}/.background/"
+mkdir -pv "${BUILDDIR}/.background/"
 
 # Copy in required files.
 cp "${JAR}" "${RESDIR}/Java/DMDirc.jar"
 cp "launcher/unix/DMDirc.sh" "${MACOSDIR}/DMDirc.sh"
 cp "launcher/unix/functions.sh" "${MACOSDIR}/functions.sh"
 cp "osx/res/dmdirc.icns" "${RESDIR}/dmdirc.icns"
-cp -v "osx/res/VolumeIcon.icns" "${APPDIR}/.VolumeIcon.icns"
-cp -v "osx/res/Background.png" "${APPDIR}/.background/background.png"
-cp -v "osx/.DS_Store" "${APPDIR}/.DS_Store"
+cp -v "osx/res/VolumeIcon.icns" "${BUILDDIR}/.VolumeIcon.icns"
+cp -v "osx/res/Background.png" "${BUILDDIR}/.background/background.png"
+cp -v "osx/.DS_Store" "${BUILDDIR}/.DS_Store"
+ln -sf /Applications ${BUILDDIR}/
 
 echo "Creating meta files"
 echo "APPLDMDI" > "${CONTENTSDIR}/PkgInfo"
@@ -247,10 +248,16 @@ if [ "" = "${HDIUTIL}" ]; then
 		fi;
 	fi;
 else
+	# Set information for the volume icon
+	SETFILE=`ls /Developer/Tools/SetFile`
+	if [ "" != "${SETFILE}" ]; then
+		${SETFILE} -c icnC "${BUILDDIR}/.VolumeIcon.icns"
+	fi;
+
 	# OSX
 	# Create Read/Write image
 	${HDIUTIL} create -volname "DMDirc" -fs HFS+ -srcfolder "${BUILDDIR}" -format UDRW "${OUTPUTFILE}.pre"
-	
+
 	# Make it auto-open
 	BLESS=`which bless`
 	if [ "" != "${BLESS}" ]; then
@@ -260,6 +267,17 @@ else
 		if [ ! -e /Volumes/DMDirc ]; then
 			${HDIUTIL} attach "${OUTPUTFILE}.pre"
 			${BLESS} -openfolder /Volumes/DMDirc
+			${HDIUTIL} detach /Volumes/DMDirc
+		fi;
+	fi;
+	# Fix VolumeIcon
+	if [ "" != "${SETFILE}" ]; then
+		if [ -e /Volumes/DMDirc ]; then
+			${HDIUTIL} detach /Volumes/DMDirc
+		fi;
+		if [ ! -e /Volumes/DMDirc ]; then
+			${HDIUTIL} attach "${OUTPUTFILE}.pre"
+			${SETFILE} -a C /Volumes/DMDirc
 			${HDIUTIL} detach /Volumes/DMDirc
 		fi;
 	fi;
