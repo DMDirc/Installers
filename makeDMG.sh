@@ -154,6 +154,7 @@ mkdir -pv "${BUILDDIR}/.background/"
 
 # Copy in required files.
 cp "${JAR}" "${RESDIR}/Java/DMDirc.jar"
+cp "osx/${JNIName}" "${RESDIR}/Java/${JNIName}"
 cp "launcher/unix/DMDirc.sh" "${MACOSDIR}/DMDirc.sh"
 cp "launcher/unix/functions.sh" "${MACOSDIR}/functions.sh"
 cp "osx/res/dmdirc.icns" "${RESDIR}/dmdirc.icns"
@@ -226,8 +227,14 @@ OUTPUTFILE="DMDirc.dmg"
 rm -Rf "${OUTPUTFILE}" "${OUTPUTFILE}.pre"
 
 if [ "" = "${HDIUTIL}" ]; then
+	# File Mapping.
+	MAPFILE=`mktemp`
+	echo ".icns     Raw     'icnC'   'ICON'   \"Icon File\"" > ${MAPFILE}
+
 	# Create Read-Only blessed image
-	${MKISOFS} -V 'DMDirc' -no-pad -r -apple -o "${OUTPUTFILE}" -hfs-creator "DMDI" -hfs-bless "/Volumes/DMDirc" "${BUILDDIR}"
+	${MKISOFS} -V 'DMDirc' -no-pad -r -apple -map ${MAPFILE} -o "${OUTPUTFILE}" -hfs-bless "${BUILDDIR}" "${BUILDDIR}"
+
+	rm ${MAPFILE};
 
 	# Compres it \o
 	if [ ! -e "osx/compress-dmg" ]; then
