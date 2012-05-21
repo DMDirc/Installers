@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LAUNCHERVERSION="17"
+LAUNCHERVERSION="18"
 LAUNCHERINFO="unix-${LAUNCHERVERSION}"
 
 params=""
@@ -250,7 +250,6 @@ elif [ -e "${profiledir}/.launcher.sh" ]; then
 		mv -fv ${profiledir}/.launcher.sh ${0}
 		if [ ! -e "${profiledir}/.launcher.sh" ]; then
 			echo "Launcher Update successful."
-			messagedialog "Launcher Update" "Launcher Update successful"
 		else
 			if [ "${UID}" = "" ]; then
 				UID=`id -u`;
@@ -280,7 +279,6 @@ elif [ -e "${profiledir}/.launcher.sh" ]; then
 			fi
 			if [ ! -e "${profiledir}/.launcher.sh" ]; then
 				echo "Update successful."
-				messagedialog "Launcher Update" "Launcher Update successful"
 			else
 				echo "Launcher failed."
 				errordialog "Launcher Update" "Launcher Update failed, using old version"
@@ -340,7 +338,6 @@ if [ -e "${UPDATESOURCE}" ]; then
 	
 	if [ "${UPDATEOK}" = "1" ]; then
 		echo "Update successful."
-		messagedialog "Client Update" "Client Update successful"
 		if [ "${UPDATEONLY}" = "1" ]; then
 			exit 0;
 		fi;
@@ -383,7 +380,6 @@ if [ -e "${UPDATESOURCE}" ]; then
 		
 		if [ ! -e "${profiledir}/.updatefailed" ]; then
 			echo "Update successful."
-			messagedialog "Client Update" "Client Update successful"
 		else
 			rm -Rf ${profiledir}/.updatefailed;
 			echo "Update failed."
