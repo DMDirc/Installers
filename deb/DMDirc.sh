@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# This script launches dmdirc and attempts to update the jar file if needed.
+# This script launches dmdirc and restarts it if required.
 #
 # DMDirc - Open Source IRC Client
 # Copyright (c) 2006-2012 DMDirc Developers

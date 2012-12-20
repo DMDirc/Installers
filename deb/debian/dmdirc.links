@@ -1,1 +1,1 @@
-usr/bin/dmdirc opt/dmdirc/DMDirc.sh
+opt/dmdirc/DMDirc.sh usr/bin/dmdirc
