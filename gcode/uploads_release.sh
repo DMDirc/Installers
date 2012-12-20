@@ -62,4 +62,10 @@ uploadFile "Debian Package" "Type-Executable,OpSys-Linux" "../output/DMDirc-${VE
 uploadFile "RPM Package" "Type-Executable,OpSys-Linux" "../output/DMDirc-${VERSION}.rpm"
 uploadFile "TGZ Package" "Type-Executable,OpSys-Linux" "../output/DMDirc-${VERSION}.tgz"
 
+## Add to apt repo.
+REPREPRO=`which reprepro`
+if [ "" != "${REPREPRO}" -a -e "/home/dmdirc/www/apt/" ]; then
+	${REPREPRO} -V -C dmdirc -b /home/dmdirc/www/apt/ includedeb all "../output/DMDirc-${VERSION}.deb"
+fi;
+
 exit 0;
