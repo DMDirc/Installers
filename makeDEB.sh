@@ -209,7 +209,7 @@ if [ "${finalTag}" != "" ]; then
 fi;
 DEST="${DEST}.deb"
 
-mv -v "${SRC}" "output/${DEST}"
+cp -v "${SRC}" "output/${DEST}"
 
 # Clean Up
 rm -Rf "${BUILDDIR}"
