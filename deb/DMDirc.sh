@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LAUNCHERVERSION="1"
+LAUNCHERVERSION="2"
 LAUNCHERINFO="deb-${LAUNCHERVERSION}"
 
 echo "---------------------"
@@ -103,7 +103,11 @@ fi
 
 echo "Running DMDirc - "
 
-${JAVA} -ea -jar ${jar} -l ${LAUNCHERINFO} ${@}
+REAL=`readlink -msq "${0}"`
+BASEDIR=$(cd "${REAL%/*}" 2>/dev/null; echo $PWD)
+JAR=${BASEDIR}/DMDirc.jar
+
+${JAVA} -ea -jar ${JAR} -l ${LAUNCHERINFO} ${@}
 EXITCODE=${?}
 if [ ${EXITCODE} -eq 42 ]; then
 	# The client says we need to update, rerun ourself before exiting.
