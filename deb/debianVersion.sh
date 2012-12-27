@@ -53,7 +53,7 @@ debianVersion() {
 	# <main version>|<milestone number>|<unstable type>|<unstable number>
 	SPLITVER=`echo "${MAINVER}" | sed -e "s/^\([0-9]\+\(\.[0-9]\+\)*\)\(m\([0-9]\+\)*\)*\(\(rc\|a\|b\)\([0-9]\+\)*\)*$/\1|\4|\6|\7/g"`
 
-	# If SPLITVER isn't valuely like what we expected, abort.
+	# If SPLITVER isn't vaugely like what we expected, abort.
 	if [ "${SPLITVER}" = "${MAINVER}" ]; then
 		echo "";
 		return;
@@ -74,10 +74,15 @@ debianVersion() {
 	elif [ "${UNSTABLETYPE}" != "" -o "${MILESTONE}" != "" ]; then
 		# If this is an unstable (or milestone) version, then we need to drop the main version
 		# by .1
-		LAST=${MAINVER##*.}
-		SECLAST=${MAINVER%.*}
-		REST=${SECLAST%.*}
-		SECLAST=${SECLAST##*.}
+		NEWSPLIT=`echo "${MAINVER}" | sed -e "s/\(.*\.\)\([0-9]*\)\.\([0-9]*\)$/\1|\2|\3/g"`
+
+		# If we only have "X.X" assume "X.X.0"
+		if [ "${NEWSPLIT}" = "${MAINVER}" ]; then
+			NEWSPLIT=`echo "${MAINVER}.0" | sed -e "s/\(.*\.\)\([0-9]*\)\.\([0-9]*\)$/\1|\2|\3/g"`
+		fi;
+		LAST=`echo "${NEWSPLIT}" | awk -F\| '{print $3}'`
+		SECLAST=`echo "${NEWSPLIT}" | awk -F\| '{print $2}'`
+		REST=`echo "${NEWSPLIT}" | awk -F\| '{print $1}'`
 
 		LAST=$(($LAST - 1))
 
@@ -86,7 +91,7 @@ debianVersion() {
 			SECLAST=$(($SECLAST - 1))
 		fi;
 
-		MAINVER=${REST}.${SECLAST}.${LAST};
+		MAINVER=${REST}${SECLAST}.${LAST};
 	fi;
 
 	# Now we start to build a version.

@@ -72,6 +72,16 @@ testVersion $(debianVersion "0.6.3m1a1") $(debianVersion "0.6.3m1a1-149-gaaaaaaa
 testVersion $(debianVersion "0.6.3-148-gaaaaaaa") $(debianVersion "0.6.3-149-gaaaaaaa") "lt"
 testVersion $(debianVersion "0.6.3-148-gaaaaaaa") $(debianVersion "0.6.3-148-gaaaaaaa") "eq"
 testVersion $(debianVersion "0.6.3-148-gaaaaaaa" "10" "1") $(debianVersion "0.6.3-148-gaaaaaaa" "1" "2") "lt"
+testVersion $(debianVersion "0.6-149-gaaaaaaa") $(debianVersion "0.7") "lt"
+testVersion $(debianVersion "0.6-149-gaaaaaaa") $(debianVersion "0.7rc1") "lt"
+testVersion $(debianVersion "0.6.3-149-gaaaaaaa") $(debianVersion "0.7") "lt"
+testVersion $(debianVersion "0.6.3-149-gaaaaaaa") $(debianVersion "0.7rc1") "lt"
+testVersion $(debianVersion "0.7rc1") $(debianVersion "0.7") "lt"
+testVersion $(debianVersion "0.7") $(debianVersion "0.7-148-gaaaaaaa") "lt"
+testVersion $(debianVersion "0.7rc1") $(debianVersion "0.7-148-gaaaaaaa") "lt"
+testVersion $(debianVersion "0.6.3-149-gaaaaaaa") $(debianVersion "0.7rc1-149-gaaaaaaa") "lt"
+testVersion $(debianVersion "0.7rc1-149-gaaaaaaa") $(debianVersion "0.7") "lt"
+testVersion $(debianVersion "0.7rc1-149-gaaaaaaa") $(debianVersion "0.7-149-gaaaaaaa") "lt"
 
 echo "";
 echo "Result:";
