@@ -1,5 +1,5 @@
 [Protocol]
-exec="/usr/bin/DMDirc" -e -c %u
+exec="/usr/bin/dmdirc" -e -c %u
 protocol=irc
 input=none
 output=none

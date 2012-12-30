@@ -2,7 +2,7 @@
 Categories=Network;IRCClient;
 Comment=DMDirc IRC Client
 Encoding=UTF-8
-Exec=/usr/bin/DMDirc
+Exec=/usr/bin/dmdirc
 GenericName=IRC Client
 Icon=/opt/dmdirc/icon.svg
 Name=DMDirc
