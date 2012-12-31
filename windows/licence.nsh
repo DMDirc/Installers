@@ -8,7 +8,7 @@ Function CUSTOM_PAGE_LICENCE
   !insertmacro MUI_HEADER_TEXT "License agreement" "Please review the license terms before installing DMDirc."
   nsDialogs::CreateControl /NOUNLOAD ${__NSD_Text_CLASS} ${DEFAULT_STYLES}|${ES_READONLY}|${WS_TABSTOP}|${ES_MULTILINE}|${WS_VSCROLL} ${__NSD_Text_EXSTYLE} 0 0 -1 -1 ""
   Pop $0
-  StrCpy $1 "Copyright (c) 2006-2012 DMDirc Developers$\r$\n$\r$\n"
+  StrCpy $1 "Copyright (c) 2006-2013 DMDirc Developers$\r$\n$\r$\n"
   SendMessage $0 ${EM_REPLACESEL} "0" "STR:$1"
   StrCpy $1 "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the $\"Software$\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:$\r$\n$\r$\n"
   SendMessage $0 ${EM_REPLACESEL} "0" "STR:$1"
