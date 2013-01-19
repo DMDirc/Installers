@@ -10,4 +10,4 @@ StartupNotify=true
 Terminal=false
 TerminalOptions=
 Type=Application
-StartupWMClass=sun-awt-X11-XFramePeer
+StartupWMClass=com-dmdirc-Main
