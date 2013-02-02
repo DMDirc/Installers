@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LAUNCHERVERSION="18"
+LAUNCHERVERSION="19"
 LAUNCHERINFO="unix-${LAUNCHERVERSION}"
 
 params=""
@@ -503,7 +503,7 @@ if [ -e "${jar}" ]; then
 		#APPLEOPTS="${APPLEOPTS} -Dapple.awt.showGrowBox=true"
 		#APPLEOPTS="${APPLEOPTS} -Dapple.laf.useScreenMenuBar=true"
 	fi;
-	${JAVA}${APPLEOPTS} -ea -jar ${jar} -l ${LAUNCHERINFO} ${params}
+	${JAVA}${APPLEOPTS} -Dfile.encoding=utf-8 -ea -jar ${jar} -l ${LAUNCHERINFO} ${params}
 	EXITCODE=${?}
 	if [ ${EXITCODE} -eq 42 ]; then
 		# The client says we need to up update, rerun ourself before exiting.

@@ -77,9 +77,9 @@ Section "launch"
   continue:
   StrCmp ${VERSION} "" unversioned versioned
   unversioned:
-    ExecWait '"$1\bin\javaw.exe" -ea -jar DMDirc.jar -l windows-NONE $R0' $0
+    ExecWait '"$1\bin\javaw.exe" -Dfile.encoding=utf-8 -ea -jar DMDirc.jar -l windows-NONE $R0' $0
   versioned:
-    ExecWait '"$1\bin\javaw.exe" -ea -jar DMDirc.jar -l windows-${VERSION} $R0' $0
+    ExecWait '"$1\bin\javaw.exe" -Dfile.encoding=utf-8 -ea -jar DMDirc.jar -l windows-${VERSION} $R0' $0
   strcmp $0 42 runclient exit
   warn:
     MessageBox MB_OK "Unable to find java, exiting."

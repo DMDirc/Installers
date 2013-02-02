@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LAUNCHERVERSION="2"
+LAUNCHERVERSION="3"
 LAUNCHERINFO="deb-${LAUNCHERVERSION}"
 
 echo "---------------------"
@@ -107,7 +107,7 @@ REAL=`readlink -msq "${0}"`
 BASEDIR=$(cd "${REAL%/*}" 2>/dev/null; echo $PWD)
 JAR=${BASEDIR}/DMDirc.jar
 
-${JAVA} -ea -jar ${JAR} -l ${LAUNCHERINFO} ${@}
+${JAVA} -Dfile.encoding=utf-8 -ea -jar ${JAR} -l ${LAUNCHERINFO} ${@}
 EXITCODE=${?}
 if [ ${EXITCODE} -eq 42 ]; then
 	# The client says we need to update, rerun ourself before exiting.
