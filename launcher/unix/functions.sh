@@ -122,7 +122,7 @@ errordialog() {
 	# If we are on OSX
 	if [ "${ISOSX}" = "1" -a "" != "${OSASCRIPT}" ]; then
 		echo "Displaying dialog.."
-		${OSASCRIPT} -e 'tell application "System Events"' -e "activate" -e "display dialog \"${1}\n${2}\" buttons {\"Ok\"} with icon stop" -e 'end tell'
+		${OSASCRIPT} -e 'tell application "System Events"' -e "activate" -e "display dialog \"${1}\n${2}\" buttons {\"Ok\"} with icon note" -e 'end tell'
 	elif [ "" != "${KDIALOG}" -a "" != "${DISPLAY}" -a "" = "${ISGNOME}" -a "${USEKDIALOG}" = "1" ]; then
 		# else if kdialog exists, and we have a display, and we are not running
 		# gnome, and either we are running kde or zenity doesn't exist..
