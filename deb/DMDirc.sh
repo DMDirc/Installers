@@ -3,7 +3,7 @@
 # This script launches dmdirc and restarts it if required.
 #
 # DMDirc - Open Source IRC Client
-# Copyright (c) 2006-2013 DMDirc Developers
+# Copyright (c) 2006-2014 DMDirc Developers
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ LAUNCHERINFO="deb-${LAUNCHERVERSION}"
 echo "---------------------"
 echo "DMDirc - Open Source IRC Client"
 echo "Launcher Version: ${LAUNCHERVERSION}"
-echo "Copyright (c) 2006-2013 DMDirc Developers"
+echo "Copyright (c) 2006-2014 DMDirc Developers"
 echo "---------------------"
 echo "Running on Linux."
 echo -n "Looking for java - ";
