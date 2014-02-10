@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LAUNCHERVERSION="21"
+LAUNCHERVERSION="22"
 LAUNCHERINFO="unix-${LAUNCHERVERSION}"
 
 params=""
@@ -72,7 +72,7 @@ for param in "$@"; do
 done;
 
 if [ -e "${BASEDIR}/functions.sh" ]; then
-	. ${BASEDIR}/functions.sh
+	. "${BASEDIR}/functions.sh"
 else
 	echo "Unable to find functions.sh, using built in functions"
 	###FUNCTIONS_FILE###
@@ -459,7 +459,7 @@ if [ -e "${jar}" ]; then
 	# Check that DMDirc will run, if java is not 1.7 this will fail.
 	# We do it this way otherwise segfaults etc would cause an unable to launch
 	# error message to be printed.
-	${JAVA} -jar ${jar} --help >/dev/null 2>&1
+	${JAVA} -jar "${jar}" --help >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		FAILED=1
 		# If we are on BSD, check to see if there is alternative versions of java
@@ -471,7 +471,7 @@ if [ -e "${jar}" ]; then
 					JAVA=${BSDJava2}
 				fi;
 				# Now check to see if DMDirc runs again.
-				${JAVA} -jar ${jar} --help >/dev/null 2>&1
+				${JAVA} -jar "${jar}" --help >/dev/null 2>&1
 				if [ $? -eq 0 ]; then
 					# It runs!
 					FAILED=0
@@ -497,14 +497,12 @@ if [ -e "${jar}" ]; then
 	# to be seen, and the shell script exits with the correct exit code.
 	APPLEOPTS=""
 	if [ "${ISOSX}" = "1" ]; then
-		APPLEOPTS="${APPLEOPTS} -Djava.library.path=${jarDir}"
-		#APPLEOPTS="${APPLEOPTS} -Dcom.apple.mrj.application.growbox.intrudes=false"
-		#APPLEOPTS="${APPLEOPTS} -Dcom.apple.mrj.application.live-resize=true"
-		APPLEOPTS="${APPLEOPTS} -Dcom.apple.mrj.application.apple.menu.about.name=DMDirc"
-		#APPLEOPTS="${APPLEOPTS} -Dapple.awt.showGrowBox=true"
-		#APPLEOPTS="${APPLEOPTS} -Dapple.laf.useScreenMenuBar=true"
+		APPLEOPTS=(-Djava.library.path="${jarDir}"
+                           -Xdock:name=DMDirc
+                           -Xdock:icon="${jarDir}/../dmdirc.icns"
+                )
 	fi;
-	${JAVA}${APPLEOPTS} -Dfile.encoding=utf-8 -ea -jar ${jar} -l ${LAUNCHERINFO} ${params}
+	${JAVA} "${APPLEOPTS[@]}" -Dfile.encoding=utf-8 -ea -jar "${jar}" -l ${LAUNCHERINFO} ${params}
 	EXITCODE=${?}
 	if [ ${EXITCODE} -eq 42 ]; then
 		# The client says we need to up update, rerun ourself before exiting.
