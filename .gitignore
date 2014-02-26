@@ -1,2 +1,12 @@
 /output/
 /windows/files/
+new-windows-launcher/build/*
+new-windows-launcher/dist/*
+new-windows-launcher/nbproject/Makefile-Debug.mk
+new-windows-launcher/nbproject/Makefile-Release.mk
+new-windows-launcher/nbproject/Makefile-variables.mk
+new-windows-launcher/nbproject/Package-Debug.bash
+new-windows-launcher/nbproject/Package-Release.bash
+new-windows-launcher/nbproject/private/*
+new-windows-launcher/nbproject/configurations.xml
+new-windows-launcher/jvm.a
