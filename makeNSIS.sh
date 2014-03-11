@@ -91,7 +91,7 @@ cp "${JAR}" "windows/files/DMDirc.jar"
 cd windows/files
 
 # Copy the icon
-cp ../../../../src/com/dmdirc/res/icon.ico icon.ico
+cp ../../res/icon.ico icon.ico
 
 cd ..
 

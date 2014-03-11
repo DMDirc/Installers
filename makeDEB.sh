@@ -163,7 +163,7 @@ fi;
 # Copy in the debian rules
 mkdir -p "${BUILDDIR}/debian"
 cp -Rfv "${DEBDIR}/"* .
-cp -Rfv ../../../src/com/dmdirc/res/source/logo.svg icon.svg
+cp -Rfv ../res/logo.svg icon.svg
 
 # Include function for creating Debain Versions
 . "${DEBDIR}/debianVersion.sh";
