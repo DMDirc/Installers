@@ -3,7 +3,7 @@ Priority: extra
 Maintainer: Shane Mc Cormack <shane@dmdirc.com>
 Uploaders: Chris Smith <chris@dmdirc.com>, Greg Holmes <greg@dmdirc.com>, Simon Mott <simon@dmdirc.com>
 Build-Depends: cdbs (>= 0.4.36), debhelper (>= 7.0.50~), javahelper (>=0.25)
-Build-Depends-Indep: default-jdk, ant-optional, git-core
+Build-Depends-Indep: java7-jdk, ant-optional, git-core
 Standards-Version: 3.9.0
 Vcs-Git: git://dmdirc.com/client
 Vcs-browser: http://git.dmdirc.com/client/
@@ -12,7 +12,7 @@ Section: misc
 
 Package: dmdirc
 Architecture: all
-Depends: ${java:Depends}, ${misc:Depends}
+Depends: java7-runtime, ${java:Depends}, ${misc:Depends}
 Recommends: ${java:Recommends}
 Description: DMDirc is an intelligent cross platform java IRC Client.
  DMDirc is an intelligent cross platform IRC Client written in java.
