@@ -87,8 +87,7 @@ for filename in files:
 		files = {"download": open(filename, 'rb')},
 		data = {"apikey": key, "channel": channel})
 
-	# TODO: Having to parse the text response is horrible. Site should 403...
-	if r.status_code == requests.codes.ok and "Forbidden" not in r.text:
+	if r.status_code == requests.codes.ok:
 		print "Submitted successfully"
 	else:
 		print "Submission FAILED"
