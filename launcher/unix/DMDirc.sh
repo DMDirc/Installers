@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LAUNCHERVERSION="22"
+LAUNCHERVERSION="23"
 LAUNCHERINFO="unix-${LAUNCHERVERSION}"
 
 params=""
@@ -417,8 +417,13 @@ if [ "${ISOSX}" = "1" ]; then
 		JAVA_HOME=`/usr/libexec/java_home --version 1.7 2>/dev/null`
 		if [ ${?} -eq 0 -a "" != "${JAVA_HOME}" ]; then
 			JAVA="${JAVA_HOME}/bin/java"
+		elif [ -e "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java" ]; then
+			# Seems the official JRE doesn't register itself
+			# properly, and just dumps itself here...
+			JAVA="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java"
 		fi;
 	fi;
+
 else
 	if [ -e "${HOME}/.profile" -a "${USEPROFILE}" = "1" ]; then
 		# Source the profile incase java can't be found otherwise
@@ -459,7 +464,7 @@ if [ -e "${jar}" ]; then
 	# Check that DMDirc will run, if java is not 1.7 this will fail.
 	# We do it this way otherwise segfaults etc would cause an unable to launch
 	# error message to be printed.
-	${JAVA} -jar "${jar}" --help >/dev/null 2>&1
+	"${JAVA}" -jar "${jar}" --help >/dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		FAILED=1
 		# If we are on BSD, check to see if there is alternative versions of java
@@ -502,7 +507,7 @@ if [ -e "${jar}" ]; then
                            -Xdock:icon="${jarDir}/../dmdirc.icns"
                 )
 	fi;
-	${JAVA} "${APPLEOPTS[@]}" -Dfile.encoding=utf-8 -ea -jar "${jar}" -l ${LAUNCHERINFO} ${params}
+	"${JAVA}" "${APPLEOPTS[@]}" -Dfile.encoding=utf-8 -ea -jar "${jar}" -l ${LAUNCHERINFO} ${params}
 	EXITCODE=${?}
 	if [ ${EXITCODE} -eq 42 ]; then
 		# The client says we need to up update, rerun ourself before exiting.
