@@ -26,8 +26,8 @@ Copyright (c) 2009 Kevin Day nsis@trumpetinc.com
     Page custom CUSTOM_PAGE_JREINFO
   !macroend
 
-  !define JRE_VERSION "1.7"
-  !define JRE_URL "www.dmdirc.com/getjava/windows/"
+  !define JRE_VERSION "1.8"
+  !define JRE_URL "redirect.dmdirc.com/java/windows/"
 
 
 ;;;;;;;;;;;;;;;;;;;;;
