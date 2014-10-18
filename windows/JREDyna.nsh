@@ -27,7 +27,7 @@ Copyright (c) 2009 Kevin Day nsis@trumpetinc.com
   !macroend
 
   !define JRE_VERSION "1.8"
-  !define JRE_URL "redirect.dmdirc.com/getjava/windows/"
+  !define JRE_URL "redirect.dmdirc.com/java/windows/"
 
 
 ;;;;;;;;;;;;;;;;;;;;;
@@ -129,11 +129,11 @@ Function DownloadAndInstallJREIfNecessary
 
 downloadJRE:
   ${If} ${RunningX64}
-    DetailPrint "About to download JRE from ${JRE_URL}x86_64"
-    nsisdl::download "${JRE_URL}x86_64" "$TEMP\jre_Setup.exe"
+    DetailPrint "About to download JRE from https://${JRE_URL}x86_64"
+    nsisdl::download "https://${JRE_URL}x86_64" "$TEMP\jre_Setup.exe"
   ${Else}
-    DetailPrint "About to download JRE from ${JRE_URL}x86"
-    nsisdl::download "${JRE_URL}x86" "$TEMP\jre_Setup.exe"
+    DetailPrint "About to download JRE from https://${JRE_URL}x86"
+    nsisdl::download "https://${JRE_URL}x86" "$TEMP\jre_Setup.exe"
   ${EndIf}
   Pop $0 # return value = exit code, "OK" if OK
   DetailPrint "Download result = $0"
