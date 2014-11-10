@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LAUNCHERVERSION="23"
+LAUNCHERVERSION="24"
 LAUNCHERINFO="unix-${LAUNCHERVERSION}"
 
 params=""
@@ -159,8 +159,8 @@ else
 	jar=${BASEDIR}/DMDirc.jar
 fi
 launcherUpdater=${profiledir}/updateLauncher.sh
-BSDJava1="/usr/local/jdk1.7.0/jre/bin/java"
-BSDJava2="/usr/local/diablo-jdk1.7.0/jre/bin/java"
+BSDJava1="/usr/local/jdk1.8.0/jre/bin/java"
+BSDJava2="/usr/local/diablo-jdk1.8.0/jre/bin/java"
 echo "---------------------"
 echo "DMDirc - Open Source IRC Client"
 echo "Launcher Version: ${LAUNCHERVERSION}"
@@ -414,7 +414,7 @@ echo -n "Looking for java - ";
 if [ "${ISOSX}" = "1" ]; then
 	JAVA=`which java`
 	if [ -e "/usr/libexec/java_home" ]; then
-		JAVA_HOME=`/usr/libexec/java_home --version 1.7 2>/dev/null`
+		JAVA_HOME=`/usr/libexec/java_home --version 1.8 2>/dev/null`
 		if [ ${?} -eq 0 -a "" != "${JAVA_HOME}" ]; then
 			JAVA="${JAVA_HOME}/bin/java"
 		elif [ -e "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java" ]; then
@@ -450,9 +450,9 @@ else
 	ERROR="Sorry, java does not appear to be installed on this machine.";
 	ERROR=${ERROR}"\n"
 	if [ "${ISOSX}" = "1" ]; then
-		ERROR=${ERROR}"\nDMDirc requires a 1.7.0 compatible JVM.";
+		ERROR=${ERROR}"\nDMDirc requires a 1.8.0 compatible JVM.";
 	else
-		ERROR=${ERROR}"\nDMDirc requires a 1.7.0 compatible JVM, you can get one from: http://www.java.com";
+		ERROR=${ERROR}"\nDMDirc requires a 1.8.0 compatible JVM, you can get one from: http://www.java.com";
 		ERROR=${ERROR}"\nor reinstall DMDirc and let the installer install one for you.";
 	fi;
 	errordialog "Unable to launch dmdirc!" "${ERROR}";
@@ -461,7 +461,7 @@ fi
 
 echo -n "Running DMDirc - "
 if [ -e "${jar}" ]; then
-	# Check that DMDirc will run, if java is not 1.7 this will fail.
+	# Check that DMDirc will run, if java is not 1.8 this will fail.
 	# We do it this way otherwise segfaults etc would cause an unable to launch
 	# error message to be printed.
 	"${JAVA}" -jar "${jar}" --help >/dev/null 2>&1
@@ -488,9 +488,9 @@ if [ -e "${jar}" ]; then
 			ERROR="Sorry, the currently installed version of java is not compatible with DMDirc.";
 			ERROR=${ERROR}"\n";
 			if [ "${ISOSX}" = "1" ]; then
-				ERROR=${ERROR}"\nDMDirc requires a 1.7.0 compatible JVM.";
+				ERROR=${ERROR}"\nDMDirc requires a 1.8.0 compatible JVM.";
 			else
-				ERROR=${ERROR}"\nDMDirc requires a 1.7.0 compatible JVM, you can get one from: http://www.java.com";
+				ERROR=${ERROR}"\nDMDirc requires a 1.8.0 compatible JVM, you can get one from: http://www.java.com";
 				ERROR=${ERROR}"\nor reinstall DMDirc and let the installer install one for you.";
 			fi;
 			errordialog "Unable to launch dmdirc!" "${ERROR}";
