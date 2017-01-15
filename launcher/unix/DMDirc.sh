@@ -3,7 +3,7 @@
 # This script launches dmdirc and attempts to update the jar file if needed.
 #
 # DMDirc - Open Source IRC Client
-# Copyright (c) 2006-2015 DMDirc Developers
+# Copyright (c) 2006-2017 DMDirc Developers
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -164,7 +164,7 @@ BSDJava2="/usr/local/diablo-jdk1.8.0/jre/bin/java"
 echo "---------------------"
 echo "DMDirc - Open Source IRC Client"
 echo "Launcher Version: ${LAUNCHERVERSION}"
-echo "Copyright (c) 2006-2015 DMDirc Developers"
+echo "Copyright (c) 2006-2017 DMDirc Developers"
 echo "---------------------"
 if [ "${ISOSX}" = "1" ]; then
 	echo "Running on OS X."
